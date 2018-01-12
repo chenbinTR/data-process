@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+# import sys
+# sys.path.append("/mnt/home/appuser/cbpython/tools/tool.py")
 from tools.tool import *
-
-path = 'C:\\Users\\cb\\Downloads\\data201710\\'
+path = 'C:\\Users\\cb\\Downloads\\20171026\\'
+# path = '/mnt/home/appuser/chat_data201711/'
 
 
 # 根据规则读取日志文件，提取所需要的内容，写入新的文件
@@ -10,13 +12,14 @@ def get_content(file_name):
     for line in open(file_name, "r", encoding="UTF-8"):
         try:
             item_list = line.split("\t")
-            # if ("2300102" == item_list[1] and item_list[2].strip("\n") in ["2", "14", "15", "17", "19", "22",
-            #                                                                "50"]):
-            if item_list[1] in ("2300101", "2300102", "2300103"):
-                # que = item_list[0].strip()
-                # if que.__len__() <= 20:
-                type = item_list[1]+"-"+item_list[2].strip("\n")
-                list_1.append(type)
+            # if item_list[1] == "2300102" and item_list[2].strip("\n") in ["50"]:
+            que = item_list[0].strip()
+            # if not Tool.is_contains_chinese(que):
+            #     continue
+            # que = Tool.replaceAll(que, "\\[.+?\\]", "")
+            # if que.__len__() > 22:
+            #     continue
+            list_1.append(que)
         except Exception as e:
             print(str(e))
             print("当前行： " + line)
@@ -42,6 +45,7 @@ def frequency_record():
     for i in list_new:
         list_file.append("\t".join(map(str, i)))
     str_file = "\n".join(list_file)
+    str_file += "\n"
 
     f = open(path + "statistics_result.txt", "a", encoding="UTF-8")
     f.write(str_file)
@@ -83,10 +87,12 @@ if __name__ == '__main__':
     logs = Tool.get_all_files(path)
     for log in logs:
         print(log)
-        print("processing......")
+        # print("processing......")
         # 根据规则提取原始日志文件
-        # get_content(log)
+        get_content(log)
         # 单个文件频次统计
-        # frequency_record()
+        frequency_record()
     # 频次合并
     combine_frequency()
+    # 排序
+    Tool.sort_repeat(path, "combin_result.txt")

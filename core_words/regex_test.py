@@ -4,9 +4,13 @@ import re
 
 if __name__ == '__main__':
     # 源文本
-    key = "你http好13391959560http://www.baid34u.com我dfd3312232323233233是[微笑]adsb234"
+    key = "鹿晗是好人啊"
     # 正则表达式
-    p1 = "http[s]?://[w]{3}\.[0-9a-z]+\.com"
+    p1 = ".*?鹿晗[^！]"
+
+    print(key.replace(p1, ""))
+
+    # p1 = "[\u4e00-\u9fa5]"
     # p1 = ".+"
     # 编译
     pattern1 = re.compile(p1)

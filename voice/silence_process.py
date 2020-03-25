@@ -3,13 +3,15 @@ import os
 
 # get rings' directory and silence time
 # directory = input("please input the rings' directory:")
-directory = "C:\\Users\\cb\\Downloads\\shanghainiujin\\shanghainiujin"
-dest = "C:\\Users\\cb\\Downloads\\shanghainiujin\\shanghainiujin-new"
+directory = "C:\\Users\\cb\\Downloads\\河北小学英语3起-result\\河北小学英语3起6年级上册\\Audio\\AudioSegmentsCH"
+dest = "C:\\Users\\cb\\Downloads\\河北小学英语3起-result\\河北小学英语3起6年级上册\\Audio\\AudioSegmentsCH-New"
 # silence_times = 1000*int(input("please input the silenct time(s) between two rings:"))
 silence_times = 1000
 print(directory)
 print(silence_times)
 
+if not os.path.exists(dest):
+    os.makedirs(dest)
 # delete ring_lists file
 # if os._exists(directory+os.sep+"ring_lists.mp3"):
 #     os.remove(directory+os.sep+"ring_lists.mp3")

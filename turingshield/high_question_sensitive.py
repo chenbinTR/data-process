@@ -2,22 +2,53 @@
 # import sys
 # sys.path.append("/mnt/home/appuser/cbpython/tools/tool.py")
 from tools.tool import *
-path = 'Q:\\22\\'
+path = 'C:\\Users\\cb\\Downloads\\temp2\\'
+
+
+def containAny(seq, aset):
+    for c in seq:
+        if c in aset:
+            return True
+    return False
+
+def prepare():
+    list_key = list()
+    for line in open("C:\\Users\\cb\\Downloads\\key.txt", "r", encoding="UTF-8"):
+        try:
+            list_key.append(line.strip(" ").strip("\n"));
+        except Exception as e:
+            str(e)
+
+    return list_key;
 
 # 根据规则读取日志文件，提取所需要的内容，写入新的文件
 def get_content(file_name):
-    list_0 = list()
+    list_key = prepare()
+    set_1 = set()
+    count = 0;
     for line in open(file_name, "r", encoding="UTF-8"):
         try:
-            list_0.append(line.strip("\n"))
-        except Exception as e:
-            print(str(e))
-    print(list_0.__len__())
+            item_list = line.split("\t")
+            answer = item_list[1]
+            if answer.__len__()>30:
+                continue
 
-    str_file = "\n".join(list_0)
-    f = open(path + 'extract_data.txt', "a", encoding="UTF-8")
+            if containAny(list_key, answer):
+                count += 1
+                # print(count)
+                set_1.add(answer)
+
+
+        except Exception as e:
+            str(e)
+
+    print(set_1.__len__())
+    str_file = "\n".join(set_1)
+    f = open(path + 'res_answer.txt', "a", encoding="UTF-8")
     f.write(str_file)
     f.close()
+
+
 # 读取待处理的内容，统计频次
 def frequency_record():
     list_1 = []
@@ -38,7 +69,9 @@ def frequency_record():
     f = open(path + "statistics_result.txt", "a", encoding="UTF-8")
     f.write(str_file)
     f.close()
-    os.remove(path + "extract_data.txt")
+
+    # os.remove(path + "extract_data.txt")
+
 
 # 按天统计过的数据，存在重复情况，合并相同问题的频次
 def combine_frequency():
@@ -69,14 +102,16 @@ def combine_frequency():
 
 
 if __name__ == '__main__':
-    # frequency_record()
     # 读取所有log文件路径
     logs = Tool.get_all_files(path)
     for log in logs:
         print(log)
+        # print("processing......")
+        # 根据规则提取原始日志文件
         get_content(log)
-        frequency_record()
+        # 单个文件频次统计
+        # frequency_record()
     # 频次合并
-    combine_frequency()
+    # combine_frequency()
     # 排序
-    Tool.sort_repeat(path, "combin_result.txt")
+    # Tool.sort_repeat(path, "combin_result.txt")

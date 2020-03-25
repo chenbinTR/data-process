@@ -1,23 +1,63 @@
 # -*- coding: utf-8 -*-
 # import sys
 # sys.path.append("/mnt/home/appuser/cbpython/tools/tool.py")
+import json
 from tools.tool import *
-path = 'Q:\\22\\'
+path = 'C:\\Users\\cb\\Downloads\\turingshield\\'
+
 
 # 根据规则读取日志文件，提取所需要的内容，写入新的文件
 def get_content(file_name):
-    list_0 = list()
+    list_1 = list()
+    count = 0
     for line in open(file_name, "r", encoding="UTF-8"):
         try:
-            list_0.append(line.strip("\n"))
-        except Exception as e:
-            print(str(e))
-    print(list_0.__len__())
+            line = line.strip("\n")
+            if "就是-zheyang" in line:
+                continue
 
-    str_file = "\n".join(list_0)
-    f = open(path + 'extract_data.txt', "a", encoding="UTF-8")
-    f.write(str_file)
-    f.close()
+            #截取time字段
+            time = line[0:19]
+
+            #截取nicknake
+            input = json.loads(line[line.index("shield input : ")+"shield input : ".__len__():line.index("--- out")])
+            nickname = ""
+            openid = ""
+            if "ext" in input:
+                nickname = input["ext"]
+            question = input["question"]
+
+            # openid = nickname.split("|||")[0]
+            if "|||" in nickname:
+                ar = nickname.split("|||")
+                nickname = ar[1]
+                openid = ar[0]
+
+            #读取处理结果
+            pornoInfo = "0"
+            sensitiveInfo = "0"
+            violenceInfo = "0"
+
+            output_str = line[line.index("--- out : ")+"--- out : ".__len__():]
+            if "null" not in output_str:
+                output = json.loads(output_str)
+                code = output["code"]
+                if 0 == code:
+                    pornoInfo = str(int(output["datas"][0]["pornoInfo"]["level"]))
+                    sensitiveInfo = str(int(output["datas"][0]["sensitiveInfo"]["level"]))
+                    violenceInfo = str(int(output["datas"][0]["violenceInfo"]["level"]))
+            count = count+1
+            str_result = openid+"\t"+nickname.replace("\n","").replace("\r", "")+"\t"+question.replace("\n","").replace("\r", "")+"\t"+time+"\t"+pornoInfo+"\t"+sensitiveInfo+"\t"+violenceInfo+"\n"
+
+            f = open(path + 'extract_data.txt', "a", encoding="UTF-8")
+            f.write(str_result)
+            f.close()
+
+        except Exception as e:
+            # str(e)
+            print(line)
+            print(str(e))
+
 # 读取待处理的内容，统计频次
 def frequency_record():
     list_1 = []
@@ -38,7 +78,6 @@ def frequency_record():
     f = open(path + "statistics_result.txt", "a", encoding="UTF-8")
     f.write(str_file)
     f.close()
-    os.remove(path + "extract_data.txt")
 
 # 按天统计过的数据，存在重复情况，合并相同问题的频次
 def combine_frequency():
@@ -69,14 +108,13 @@ def combine_frequency():
 
 
 if __name__ == '__main__':
-    # frequency_record()
     # 读取所有log文件路径
     logs = Tool.get_all_files(path)
     for log in logs:
         print(log)
-        get_content(log)
-        frequency_record()
+        # get_content(log)
+    frequency_record()
     # 频次合并
-    combine_frequency()
+    # combine_frequency()
     # 排序
-    Tool.sort_repeat(path, "combin_result.txt")
+    # Tool.sort_repeat(path, "combin_result.txt")

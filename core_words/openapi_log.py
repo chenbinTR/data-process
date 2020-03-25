@@ -1,23 +1,45 @@
 # -*- coding: utf-8 -*-
 # import sys
 # sys.path.append("/mnt/home/appuser/cbpython/tools/tool.py")
+import json
 from tools.tool import *
-path = 'Q:\\22\\'
+
+path = 'C:\\Users\\cb\\Downloads\\openapilog\\'
+
 
 # 根据规则读取日志文件，提取所需要的内容，写入新的文件
 def get_content(file_name):
     list_0 = list()
-    for line in open(file_name, "r", encoding="UTF-8"):
+    for hang in open(file_name, "r", encoding="UTF-8"):
         try:
-            list_0.append(line.strip("\n"))
+            hang = hang.strip("\n")
+            if "openapiInput" in hang and "openapiOutput" in hang:
+                line = json.loads(hang)
+                openapiInput = line["openapiInput"]
+                key = openapiInput["key"]
+                cmd = openapiInput["cmd"]
+
+                user_info = openapiInput["user_info"]
+                open_id = user_info["open_id"]
+                robot_id = openapiInput["robot_id"]
+                input_text = openapiInput["input_text"]
+
+                openapiOutput = line["openapiOutput"]
+                result = openapiOutput["result"]
+                intent = result["intent"]
+
+                time = line["time"]
+                userId = line["userId"]
         except Exception as e:
             print(str(e))
-    print(list_0.__len__())
+
 
     str_file = "\n".join(list_0)
-    f = open(path + 'extract_data.txt', "a", encoding="UTF-8")
+    f = open(path + 'res6.txt', "a", encoding="UTF-8")
     f.write(str_file)
     f.close()
+
+
 # 读取待处理的内容，统计频次
 def frequency_record():
     list_1 = []
@@ -38,7 +60,9 @@ def frequency_record():
     f = open(path + "statistics_result.txt", "a", encoding="UTF-8")
     f.write(str_file)
     f.close()
-    os.remove(path + "extract_data.txt")
+
+    # os.remove(path + "extract_data.txt")
+
 
 # 按天统计过的数据，存在重复情况，合并相同问题的频次
 def combine_frequency():
@@ -69,14 +93,13 @@ def combine_frequency():
 
 
 if __name__ == '__main__':
-    # frequency_record()
     # 读取所有log文件路径
     logs = Tool.get_all_files(path)
     for log in logs:
         print(log)
         get_content(log)
-        frequency_record()
-    # 频次合并
-    combine_frequency()
-    # 排序
-    Tool.sort_repeat(path, "combin_result.txt")
+        # frequency_record()
+        # 频次合并
+        # combine_frequency()
+        # 排序
+        # Tool.sort_repeat(path, "combin_result.txt")

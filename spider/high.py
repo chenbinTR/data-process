@@ -5,29 +5,49 @@ import collections
 import re
 
 # sys.path.append("/mnt/home/appuser/cbpython/tools/tool.py")
-# path = 'C:\\Users\\cb\Downloads\\2\\'
-path = '/mnt/home/appuser/chat_data201711/'
+path = 'C:\\Users\\cb\Downloads\\2\\'
+# path = ''
 
 
 # 根据规则读取日志文件，提取所需要的内容，写入新的文件
 def get_content(file_name):
-    list_1 = list()
-    for line in open(file_name, "r"):
+    list_a = set()
+    for line in open(path+"1111111.txt","r", encoding="UTF-8"):
         try:
-            item_list = line.split("\t")
-            if item_list[5] == "1":
-                continue
-            appid = item_list[3].strip()
-            parse_tpye = item_list[4].strip()
+            a = line.strip("\n")
+            list_a.add(a)
+        except Exception as e1:
+            str(e1)
+            print(e1)
+    print(list_a.__len__())
 
-            list_1.append(appid+"-"+parse_tpye)
+    list_1 = list()
+    list_2 = list()
+    count = 0
+    for line in open(path+"qa-20180622.txt", "r", encoding="UTF-8"):
+        count = count+1
+        try:
+            line = line.strip("\n")
+            answer = line.split("\t")[4]
+            # s = ''.join(re.findall(u'[\u4e00-\u9fff]+', answer))
+            if answer in list_a:
+                list_1.append(line)
         except Exception as e:
-            print(str(e))
+            list_2.append(line)
+            str(e)
+        if count%100 == 0:
+            print(count)
 
     str_file = "\n".join(list_1)
-    f = open(path + 'extract_data.txt', "a")
+    f = open(path+'delete_20180914.txt', "a", encoding="UTF-8")
     f.write(str_file)
     f.close()
+
+
+    str_file2 = "\n".join(list_2)
+    f2 = open(path+'23.txt', "a", encoding="UTF-8")
+    f2.write(str_file2)
+    f2.close()
 
 
 # 读取待处理的内容，统计频次
@@ -184,10 +204,10 @@ if __name__ == '__main__':
         print(log)
         # print("processing......")
         # 根据规则提取原始日志文件
-        get_content(log)
+    get_content("")
         # 单个文件频次统计
-        frequency_record()
+        #frequency_record()
     # 频次合并
-    combine_frequency()
+    #combine_frequency()
     # 排序
-    Tool.sort_repeat(path, "combin_result.txt")
+    #Tool.sort_repeat(path, "combin_result.txt")

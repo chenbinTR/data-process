@@ -2,22 +2,25 @@
 # import sys
 # sys.path.append("/mnt/home/appuser/cbpython/tools/tool.py")
 from tools.tool import *
-path = 'Q:\\22\\'
+path = 'C:\\Users\\cb\\Downloads\\1\\'
+
 
 # 根据规则读取日志文件，提取所需要的内容，写入新的文件
 def get_content(file_name):
-    list_0 = list()
-    for line in open(file_name, "r", encoding="UTF-8"):
+    list_1 = list()
+    for line in open(path+"userid_result.txt", "r", encoding="UTF-8"):
         try:
-            list_0.append(line.strip("\n"))
+            userid = line.split("\t")[0]
+            list_1.append(userid)
         except Exception as e:
-            print(str(e))
-    print(list_0.__len__())
+            str(e)
 
-    str_file = "\n".join(list_0)
+    print(list_1.__len__())
+    str_file = "\n".join(list_1)
     f = open(path + 'extract_data.txt', "a", encoding="UTF-8")
     f.write(str_file)
     f.close()
+
 # 读取待处理的内容，统计频次
 def frequency_record():
     list_1 = []
@@ -38,7 +41,7 @@ def frequency_record():
     f = open(path + "statistics_result.txt", "a", encoding="UTF-8")
     f.write(str_file)
     f.close()
-    os.remove(path + "extract_data.txt")
+
 
 # 按天统计过的数据，存在重复情况，合并相同问题的频次
 def combine_frequency():
@@ -69,14 +72,14 @@ def combine_frequency():
 
 
 if __name__ == '__main__':
-    # frequency_record()
     # 读取所有log文件路径
     logs = Tool.get_all_files(path)
     for log in logs:
         print(log)
-        get_content(log)
-        frequency_record()
+        # print("processing......")
+        get_content("")
+        # frequency_record()
     # 频次合并
-    combine_frequency()
+    # combine_frequency()
     # 排序
-    Tool.sort_repeat(path, "combin_result.txt")
+    # Tool.sort_repeat(path, "combin_result.txt")

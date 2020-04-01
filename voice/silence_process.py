@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
+# coding=utf-8
 from pydub import AudioSegment
 import os
 
 # get rings' directory and silence time
 # directory = input("please input the rings' directory:")
-directory = "C:\\Users\\cb\\Downloads\\河北小学英语3起-result\\河北小学英语3起6年级上册\\Audio\\AudioSegmentsCH"
-dest = "C:\\Users\\cb\\Downloads\\河北小学英语3起-result\\河北小学英语3起6年级上册\\Audio\\AudioSegmentsCH-New"
+directory = "E:\\河北小学英语1起-result\\河北小学英语1起1年级上册\\Audio\\AudioByPage"
+dest = "E:\\河北小学英语1起-result\\sss\\AudioByPage"
 # silence_times = 1000*int(input("please input the silenct time(s) between two rings:"))
 silence_times = 1000
 print(directory)
@@ -18,17 +20,13 @@ if not os.path.exists(dest):
 
 silence_ring = AudioSegment.silent(int(silence_times))
 
-# get files' name
-# file_list = []
+
 for file in os.listdir(directory):
     try:
         path = os.path.join(directory, file)
         sound = AudioSegment.from_mp3(path)
-
         ring_lists = AudioSegment.empty()
-    # i += 1
         ring_lists += sound
-    # if i!= sounds.__len__():
         ring_lists += silence_ring
         ring_lists.export(dest+os.sep+file, format="mp3")
     except Exception as e:

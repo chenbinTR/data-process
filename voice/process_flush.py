@@ -22,8 +22,9 @@ def addSilent(file):
         ring_lists += silence_ring
 
         dest_file = file.replace("刷新数据", "刷新数据-加静音段")
-
-        ring_lists.export(dest_file, format="mp3")
+        # 转单声道
+        single_ring = ring_lists.split_to_mono()[0]
+        single_ring.export(dest_file, format="mp3")
     except Exception as e:
         print(e.__cause__)
         print(file)

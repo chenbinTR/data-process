@@ -9,7 +9,7 @@ from pydub import AudioSegment
 
 
 silence_times = 1000
-silence_ring = AudioSegment.silent(int(silence_times))
+silence_ring = AudioSegment.silent(int(silence_times), 44100)
 source_list = []
 
 
@@ -17,13 +17,12 @@ source_list = []
 def addSilent(file):
     try:
         sound = AudioSegment.from_mp3(file)
-        ring_lists = AudioSegment.empty()
-        ring_lists += sound
-        ring_lists += silence_ring
+        sound = sound.split_to_mono()[0]
+        sound += silence_ring
 
         dest_file = file.replace("刷新数据", "刷新数据-加静音段")
         # 转单声道
-        single_ring = ring_lists.split_to_mono()[0]
+        single_ring = sound.split_to_mono()[0]
         single_ring.export(dest_file, format="mp3")
     except Exception as e:
         print(e.__cause__)

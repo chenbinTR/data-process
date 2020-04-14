@@ -8,12 +8,23 @@ import uuid
 # 输入路径 E:\BOOK_DATA\已处理\已修正\
 # 输出路径 E:\BOOK_DATA\已处理\已修正-加静音段
 
+# 根目录
+root_path = "E:\\BOOK_DATA\\已处理\\已修正\\"
+
+# 静音段
 silence_times = 1000
-
 silence_ring = AudioSegment.silent(int(silence_times), 44100)
-
+# silence_ring = AudioSegment.from_mp3("E:\\jingyin1.mp3")
+# silence_ring = silence_ring.split_to_mono()[0]
+#
 # source_list = ["北师大小学英语1起","教科版广州小学英语","河北小学英语1起","河北小学英语3起","科普小学英语","牛津上海版试用本","人教小学英语精通版","人教新起点","上海牛津小学英语深圳版","新标准1起","新标准3起","译林牛津小学英语"]
-source_list = ["人教pep"]
+
+# 需要处理的书本名称
+source_list = ['新标准3起']
+# source_list = []
+
+# for book_name in os.listdir(root_path):
+#     source_list.append(book_name)
 
 source_name = "已修正"
 dest_name = "已修正-加静音段"
@@ -25,11 +36,11 @@ def addSilent(file):
         if os.path.isdir(file):
             return
         sound = AudioSegment.from_mp3(file)
-        # sound = sound.split_to_mono()[0]
-        # print('channels: '+sound.channels+"-"+silence_ring.channels)
-        # print("frame_rate: "+sound.frame_rate+'-'+silence_ring.frame_rate)
-        # print("sample_width: "+sound.sample_width+"-"+silence_ring.sample_width)
-        # print("frame_width: "+sound.frame_width+"-"+silence_ring.frame_width )
+        sound = sound.split_to_mono()[0]
+        # print('channels: ', sound.channels, "-", silence_ring.channels)
+        # print("frame_rate: ", sound.frame_rate, '-', silence_ring.frame_rate)
+        # print("sample_width: ", sound.sample_width, "-", silence_ring.sample_width)
+        # print("frame_width: ", sound.frame_width, "-", silence_ring.frame_width)
         # print()
         # print(sound.frame_width)
         # ring_lists = AudioSegment.empty()
@@ -38,21 +49,17 @@ def addSilent(file):
         # ring_lists += silence_ring
         sound += silence_ring
         dest_file = file.replace(source_name, dest_name)
-
-        temp_file = "E:\\temp\\"+uuid.uuid1().__str__()+".mp3"
+        # cmd = 'ffmpeg -i "concat:'+file+'|E:\\jingyin.mp3" -acodec copy '+dest_file
+        # os.system(cmd)
 
         # 转单声道
         # single_ring = ring_lists.split_to_mono()[0]
         # ring_lists.export(dest_file, format="mp3")
-
-        sound.export(temp_file, format="mp3")
-
-        sound_new = AudioSegment.from_mp3(temp_file).split_to_mono()[0]
-
-        sound_new.export(dest_file, format="mp3")
+        sound = sound.split_to_mono()[0]
+        sound.export(dest_file, format="mp3")
 
     except Exception as e:
-        print(e)
+        print(e,file)
 
 
 # 处理一本书
@@ -87,5 +94,5 @@ def process_one_book(source):
 
 
 for book in source_list:
-    source = "E:\\BOOK_DATA\\已处理\\" + source_name + "\\" + book
+    source = root_path + book
     process_one_book(source)

@@ -20,7 +20,7 @@ silence_ring = AudioSegment.silent(int(silence_times), 44100)
 # source_list = ["北师大小学英语1起","教科版广州小学英语","河北小学英语1起","河北小学英语3起","科普小学英语","牛津上海版试用本","人教小学英语精通版","人教新起点","上海牛津小学英语深圳版","新标准1起","新标准3起","译林牛津小学英语"]
 
 # 需要处理的书本名称
-source_list = ['人教部编版语文456年级上册2020年秋河北印刷']
+source_list = ['上海初中英语-副本']
 # source_list = []
 
 # for book_name in os.listdir(root_path):

@@ -18,7 +18,7 @@ if __name__ == '__main__':
                 param_dict = {'query': item, 'apikey': '7d8335c8aff644ccb6bc52f626b95838'}
                 print(param_dict)
                 param = json.dumps(param_dict)
-                d = requests.post(url, data=param, headers=headers, timeout=0.3)
+                d = requests.post(url, data=param_dict, headers=headers, timeout=0.3)
                 print(json.loads(d.content))
             except Exception as e:
                 exc_times += 1

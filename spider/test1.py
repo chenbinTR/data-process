@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- conding: utf-8 -*-
-import pypyodbc
+import pyodbc
 import xlrd
 
 
@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     for table in tables:
         mdb = 'Driver={Microsoft Access Driver (*.mdb,*.accdb)};DBQ=C:\\Users\\liyua\\Desktop\\1.mdb'
-        conn = pypyodbc.win_connect_mdb(mdb)
+        conn = pyodbc.win_connect_mdb(mdb)
         cur = conn.cursor()
         sql = "SELECT * FROM " + table
         print(sql)

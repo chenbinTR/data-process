@@ -51,6 +51,27 @@ def hello_world():
     # return json.dumps(test_dict)
     return json_str
 
+@app.route('/uploadfile', methods=['POST'])
+def upload_file():
+    file = request.files.get("file")
+    # file_stream = request.FILES.get("file")
+    # file.save("E:\\2.zip")
+    print(current_app.name)
+
+    test_dict = {}
+    test_dict['test1'] = 1
+    test_dict['test2'] = 1
+
+    customers = [
+        Customer('john', 'A', 15, '111', 'aaa'),
+        Customer('jane', 'B', 12, '222', 'bbb'),
+        Customer('dave', 'B', 10, '333', 'ccc'),
+    ]
+    json_str = json.dumps(customers, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+    print(json_str)
+
+    # return json.dumps(test_dict)
+    return json_str
 
 if __name__ == '__main__':
     app.run(debug=True)

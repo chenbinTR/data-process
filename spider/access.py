@@ -6,16 +6,17 @@
 @desc 
 @date 2021/4/1
 """
-import pyodbc
+# import pyodbc
+import pypyodbc
 
 if __name__ == "__main__":
     tables = ['Content']
     print(len(tables))
 
     for table in tables:
-        # mdb = 'Driver={Microsoft Access Driver (*.mdb,*.accdb)};DBQ=E:\\DICT_DATA\\294\\SpiderResult.mdb'
+        # mdb = 'Driver={Microsoft Access Driver (*.mdb)};DBQ=E:\\DICT_DATA\\294\\SpiderResult.mdb'
         mdb = 'Driver={SQL Server};DBQ=E:\\DICT_DATA\\294\\SpiderResult.mdb'
-        conn = pyodbc.connect(mdb)
+        conn = pypyodbc.win_connect_mdb(mdb)
         cur = conn.cursor()
         sql = "SELECT * FROM " + table
         print(sql)
